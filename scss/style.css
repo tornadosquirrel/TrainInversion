@@ -84,7 +84,7 @@ body {
 
 #chord-display {
   font-size: calc(var(--white-width) * 1.5);
-  letter-spacing: calc(var(--white-width) * -0.5);
+  letter-spacing: calc(var(--white-width) * -0.3);
 }
 
 #start-btn {
