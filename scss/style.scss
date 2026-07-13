@@ -1,0 +1,108 @@
+:root {
+  --white-width: clamp(2.3rem, 5vw, 4.5rem);
+  --white-height: calc(var(--white-width) * 6);
+
+  --black-width-ratio: 0.6;
+  --black-height-ratio: 0.6;
+
+  --black-width: calc(var(--white-width) * var(--black-width-ratio));
+  --black-height: calc(var(--white-height) * var(--black-height-ratio));
+
+  --bg: #eef2f6;
+  --white-key: #fafbfc;
+  --black-key: #434a57;
+
+  --root: #ef4444;
+  --third: #22c55e;
+  --fifth: #3b82f6;
+
+  --key-shadow: inset 0 calc(var(--white-width) * -0.05) 0px calc(var(--white-width) * 0.02) rgba(0, 0, 0, 0.315);
+}
+
+* {
+  box-sizing: border-box;
+  color: var(--black-key);
+}
+
+body {
+  background-color: var(--bg);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#piano {
+  position: relative;
+}
+
+.white-layer {
+  display: flex;
+}
+
+.black-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.white {
+  width: var(--white-width);
+  height: var(--white-height);
+  border-radius: calc(var(--white-width) / 10);
+
+  background: var(--white-key);
+}
+
+.black {
+  position: absolute;
+  width: calc(var(--white-width) * 0.6);
+  height: calc(var(--white-height) * 0.6);
+  border-radius: calc(var(--black-width) / 10);
+  background: var(--black-key);
+}
+
+.white,
+.black {
+  transition: background-color .15s;
+
+  box-shadow: var(--key-shadow);
+}
+
+.root {
+  background: var(--root);
+}
+
+.third {
+  background: var(--third);
+}
+
+.fifth {
+  background: var(--fifth);
+}
+
+#control-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: calc(var(--white-width) * 0.5);
+}
+
+#chord-display {
+  font-size: calc(var(--white-width) * 1.5);
+  letter-spacing: calc(var(--white-width) * -0.5);
+}
+
+#start-btn {
+  position: absolute;
+  right: var(--white-width);
+  background-color: var(--white-key);
+  border: none;
+  border-radius: 999px;
+  box-shadow: var(--key-shadow);
+  font-size: calc(var(--white-width) * 0.3);
+  width: calc(var(--white-width) * 1.5);
+  height: calc(var(--white-width) * 0.7);
+  margin-left: calc(var(--white-width) * 2);
+}
