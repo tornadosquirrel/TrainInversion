@@ -182,7 +182,7 @@ function nextProblem() {
 let isPlaying = false;
 let isCycle = false;
 
-const INTERVAL = 3000;
+const INTERVAL = 5000;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
