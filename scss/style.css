@@ -11,6 +11,7 @@
   --root: #ef4444;
   --third: #22c55e;
   --fifth: #3b82f6;
+  --chord-color: #b04db9;
   --key-shadow: inset 0 calc(var(--white-width) * -0.05) 0px calc(var(--white-width) * 0.02) rgba(0, 0, 0, 0.315);
 }
 
@@ -75,6 +76,10 @@ body {
   background: var(--fifth);
 }
 
+.chord-color {
+  background: var(--chord-color);
+}
+
 #control-panel {
   display: flex;
   justify-content: center;
@@ -86,9 +91,7 @@ body {
   font-size: calc(var(--white-width) * 1.5);
 }
 
-#start-btn {
-  position: absolute;
-  right: var(--white-width);
+#mode {
   background-color: var(--white-key);
   border: none;
   border-radius: 999px;
@@ -96,5 +99,19 @@ body {
   font-size: calc(var(--white-width) * 0.3);
   width: calc(var(--white-width) * 1.5);
   height: calc(var(--white-width) * 0.7);
+  position: absolute;
+  right: calc(var(--white-width) + var(--white-width) * 2);
+}
+
+#start-btn {
+  background-color: var(--white-key);
+  border: none;
+  border-radius: 999px;
+  box-shadow: var(--key-shadow);
+  font-size: calc(var(--white-width) * 0.3);
+  width: calc(var(--white-width) * 1.5);
+  height: calc(var(--white-width) * 0.7);
+  position: absolute;
+  right: var(--white-width);
   margin-left: calc(var(--white-width) * 2);
 }/*# sourceMappingURL=style.css.map */
