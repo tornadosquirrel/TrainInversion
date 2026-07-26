@@ -209,7 +209,7 @@ let isCycle = false;
 let currentCycle = 0;
 let maxCycle = 1;
 
-const INTERVAL = 3000;
+const INTERVAL = 5000;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
