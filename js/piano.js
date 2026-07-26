@@ -60,9 +60,15 @@ function clearKeys() {
     key.classList.remove("root");
     key.classList.remove("third");
     key.classList.remove("fifth");
+    key.classList.remove("chord-color");
   });
 
 }
+
+//모드들
+const modes = ["기본모드", "음 찾기 모드"];
+let currentModeIndex = 0;
+const modeButton = document.querySelector("#mode");
 
 //색칠하기 함수
 function paint(chord) {
@@ -75,16 +81,32 @@ function paint(chord) {
 
     const note = Number(key.dataset.note);
 
-    if (note === chord.root) {
-      key.classList.add("root");
-    }
+    if (currentModeIndex === 0) {
 
-    if (note === chord.third) {
-      key.classList.add("third");
-    }
+      if (note === chord.root) {
+        key.classList.add("root");
+      }
 
-    if (note === chord.fifth) {
-      key.classList.add("fifth");
+      if (note === chord.third) {
+        key.classList.add("third");
+      }
+
+      if (note === chord.fifth) {
+        key.classList.add("fifth");
+      }
+    }
+    else if (currentModeIndex === 1) {
+      if (note === chord.root) {
+        key.classList.add("chord-color");
+      }
+
+      if (note === chord.third) {
+        key.classList.add("chord-color");
+      }
+
+      if (note === chord.fifth) {
+        key.classList.add("chord-color");
+      }
     }
 
   });
@@ -147,7 +169,7 @@ let timer = null;
 
 const chordDisplay = document.querySelector("#chord-display");
 const startButton = document.querySelector("#start-btn");
-// const inversionDisplay = document.querySelector("#inversion-display") 전위 표시
+const subDisplay = document.querySelector("#sub-display");
 
 const inversionNames = [
   "기본형",
@@ -155,9 +177,11 @@ const inversionNames = [
   "2전위"
 ];
 
+const noteNames = ["1음", "3음", "5음"];
+let currentNoteIndex = 0;
+
 function renderProblem(problem) {
   chordDisplay.textContent = `${problem.name}`;
-  // inversionDisplay.textContent = `${inversionNames[problem.inversion]}`;
 
 }
 
@@ -182,7 +206,10 @@ function nextProblem() {
 let isPlaying = false;
 let isCycle = false;
 
-const INTERVAL = 5000;
+let currentCycle = 0;
+let maxCycle = 1;
+
+const INTERVAL = 3000;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -194,20 +221,27 @@ function shuffle(array) {
 }
 
 function startTimer() {
-
   timer = setInterval(() => {
-
+    console.log(currentProblem)
     if (currentProblem >= problems.length) {
 
       clearInterval(timer);
 
-      isPlaying = false;
-      isCycle = false;
-      clearKeys();
-      startButton.textContent = "시작";
+      currentCycle++;
+
+      if (currentCycle < maxCycle) {
+        currentProblem = 0;
+        currentNoteIndex++;
+
+        chordDisplay.textContent = noteNames[currentNoteIndex];
+        subDisplay.textContent = noteNames[currentNoteIndex];
+
+        startTimer();      // 다음 사이클
+      } else {
+        finishGame();
+      }
 
       return;
-
     }
 
     nextProblem();
@@ -215,33 +249,74 @@ function startTimer() {
   }, INTERVAL);
 }
 
-startButton.addEventListener("click", () => {
+async function initCycle() {
+  if (!isCycle) {
 
-  if (isCycle === false) { //init
+    shuffle(problems);
+
+    currentProblem = 0;
+    currentCycle = 0;
+    currentNoteIndex = 0;
+
+    maxCycle = currentModeIndex === 0 ? 1 : 3;
+
+    if (currentModeIndex === 1) {
+      chordDisplay.textContent = noteNames[0];
+      subDisplay.textContent = noteNames[0];
+    }
 
     isPlaying = true;
     isCycle = true;
     startButton.textContent = "일시정지";
 
-    shuffle(problems);
-
-    clearInterval(timer);
-    currentProblem = 0;
-
     startTimer();
   }
-
-  else if (isPlaying === true) {
+  else if (isPlaying) {
 
     clearInterval(timer);
     isPlaying = false;
     startButton.textContent = "다시시작";
+
   }
 
   else {
 
     isPlaying = true;
     startButton.textContent = "일시정지";
+
     startTimer();
   }
+}
+
+function finishGame() {
+  isPlaying = false;
+  isCycle = false;
+
+  currentCycle = 0;
+  currentProblem = 0;
+  currentNoteIndex = 0;
+
+  clearKeys();
+
+  chordDisplay.textContent = "전위 연습";
+  subDisplay.textContent = "";
+
+  startButton.textContent = "시작";
+}
+
+startButton.addEventListener("click", () => {
+  initCycle();
+
 });
+
+//모드변경버튼
+modeButton.addEventListener("click", () => {
+  if (!isPlaying && !isCycle && currentModeIndex === 0) {
+    chordDisplay.textContent = `음 찾기 모드`;
+    currentModeIndex = (currentModeIndex + 1) % modes.length;
+  }
+  else if (!isPlaying && !isCycle) {
+    chordDisplay.textContent = `전위 연습`;
+    currentModeIndex = (currentModeIndex + 1) % modes.length;
+  }
+})
